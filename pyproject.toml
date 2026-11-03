@@ -1,0 +1,62 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "agent-eval-harness"
+version = "1.0.0"
+description = "Deterministic Zero-Cloud Agent Evaluation, Red-Teaming & Benchmark Harness for AI Agents & MCP"
+readme = "README.md"
+requires-python = ">=3.9"
+license = "MIT"
+authors = [
+    { name = "Benni Alencar", email = "bennialencar@gmail.com" }
+]
+keywords = [
+    "agent-eval",
+    "ai-agents",
+    "mcp",
+    "mcp-server",
+    "llm-evaluation",
+    "red-teaming",
+    "benchmarking",
+    "claude-code",
+    "cursor",
+    "zero-cloud",
+    "deterministic-eval",
+    "proof-over-prompts"
+]
+classifiers = [
+    "Development Status :: 5 - Production/Stable",
+    "Intended Audience :: Developers",
+    "Intended Audience :: Information Technology",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Topic :: Scientific/Engineering :: Artificial Intelligence",
+    "Topic :: Software Development :: Testing",
+    "Topic :: Software Development :: Libraries :: Python Modules"
+]
+dependencies = []
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=7.0.0",
+    "twine>=4.0.0",
+    "build>=1.0.0"
+]
+
+[project.scripts]
+agent-eval-harness = "agent_eval_harness.cli:main"
+
+[project.urls]
+Homepage = "https://github.com/BenniAlencar/agent-eval-harness"
+Repository = "https://github.com/BenniAlencar/agent-eval-harness"
+Issues = "https://github.com/BenniAlencar/agent-eval-harness/issues"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/agent_eval_harness"]
