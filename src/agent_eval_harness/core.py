@@ -9,7 +9,7 @@ from dataclasses import dataclass, field
 from typing import Any, Dict, List, Optional
 
 from .assertions import Assertion, AssertionResult
-from .receipts import EvaluationReceipt
+from .receipts import EvaluationReceipt, compute_sha256
 
 
 @dataclass
@@ -38,13 +38,40 @@ class SuiteResult:
 
 
 class EvalSuite:
-    def __init__(self, name: str, pass_threshold: float = 0.8) -> None:
+    def __init__(
+        self,
+        name: str,
+        pass_threshold: float = 0.8,
+        task_version: str = "v1.0.0",
+        policy_version: str = "2026.11-strict",
+    ) -> None:
         self.name = name
         self.pass_threshold = pass_threshold
+        self.task_version = task_version
+        self.policy_version = policy_version
         self.cases: List[TestCase] = []
 
     def add_case(self, case: TestCase) -> None:
         self.cases.append(case)
+
+    def compute_input_digest(self) -> str:
+        """Computes deterministic RFC 8785 SHA-256 digest of input goals and metadata."""
+        case_inputs = [{"id": c.id, "goal": c.goal, "metadata": c.metadata} for c in self.cases]
+        return compute_sha256(case_inputs)
+
+    def compute_ruleset_digest(self) -> str:
+        """Computes deterministic RFC 8785 SHA-256 digest of invariant assertion ruleset."""
+        rules = []
+        for c in self.cases:
+            for a in c.assertions:
+                rules.append({
+                    "case_id": c.id,
+                    "assertion": a.name,
+                    "assertion_type": getattr(a.assertion_type, "value", str(a.assertion_type)),
+                    "expected_value": a.expected_value,
+                    "weight": a.weight,
+                })
+        return compute_sha256(rules)
 
 
 class EvalHarness:
@@ -105,6 +132,9 @@ class EvalHarness:
         overall_score = (total_score_sum / total_cases) if total_cases > 0 else 1.0
         gate_verdict = "PASS" if overall_score >= suite.pass_threshold and passed_count == total_cases else "FAIL"
 
+        input_digest = suite.compute_input_digest()
+        ruleset_digest = suite.compute_ruleset_digest()
+
         receipt = EvaluationReceipt(
             suite_name=suite.name,
             total_cases=total_cases,
@@ -112,6 +142,10 @@ class EvalHarness:
             overall_score=round(overall_score, 4),
             gate_verdict=gate_verdict,
             case_results=case_records,
+            task_version=suite.task_version,
+            policy_version=suite.policy_version,
+            input_digest=input_digest,
+            ruleset_digest=ruleset_digest,
         )
 
         elapsed = (time.perf_counter() - t0) * 1000.0

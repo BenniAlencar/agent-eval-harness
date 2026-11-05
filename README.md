@@ -115,8 +115,27 @@ result = harness.run_suite(suite)
 
 print("Gate Verdict:", result.receipt.gate_verdict)      # PASS
 print("Overall Score:", result.receipt.overall_score)      # 1.0
-print("Receipt Hash:", result.receipt.merkle_root_hash)   # SHA-256 Merkle Root
+print("Receipt Hash:", result.receipt.merkle_root_hash)   # RFC 8785 Canonical Root Hash
+
+# Reproducible independent verification:
+valid, msg = result.receipt.verify_reproducibility(
+    expected_task_version="v1.0.0",
+    expected_policy_version="2026.11-strict"
+)
+print("Verifier Validated:", valid)  # True
 ```
+
+---
+
+## 🔒 Reproducible Cryptographic Verification (RFC 8785 JCS)
+
+> *"Cryptographic receipts are only valuable if the verifier can reproduce the claim from a canonical payload. The receipt must bind task version, input digest, policy version, and evaluator ruleset — not just the outcome."* — Community Architectural Review.
+
+Starting in **v1.1.0**, `EvaluationReceipt` implements **RFC 8785 JSON Canonicalization Scheme (JCS)**. An auditor or CI/CD gate can independently reproduce the claim bit-for-bit without relying on trusted intermediaries:
+
+$$\mathcal{R}_{\text{canonical}} = \text{SHA256}\Big(\text{JCS}\big(\text{task\_ver} \parallel H(\text{inputs}) \parallel \text{policy\_ver} \parallel H(\text{rules}) \parallel H(\text{engine}) \parallel \text{outcome}\big)\Big)$$
+
+If an adversary alters a single character in the candidate input or relaxes an assertion weight, `verify_reproducibility()` rejects the receipt immediately.
 
 ---
 
