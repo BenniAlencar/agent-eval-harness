@@ -1,20 +1,27 @@
-# agent-eval-harness ⚖️🛡️
+<div align="center">
 
-[![CI Test Suite](https://img.shields.io/badge/CI-100%25%20Passing-brightgreen.svg)](https://github.com/BenniAlencar/agent-eval-harness)
-[![Python Version](https://img.shields.io/badge/python-3.9%20%7C%203.10%20%7C%203.11%20%7C%203.12-blue.svg)](https://pypi.org/project/agent-eval-harness/)
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
-[![MCP Compatible](https://img.shields.io/badge/MCP-JSON--RPC%202.0-8a2be2.svg)](https://modelcontextprotocol.io/)
-[![Zero Cloud Leakage](https://img.shields.io/badge/Telemetry-0%25%20(Local--First)-success.svg)](#privacy--zero-telemetry)
-[![Deterministic Speed](https://img.shields.io/badge/Latency-%3C0.1ms%2Fcase-cyan.svg)](#micro-benchmarks)
+<img src="https://capsule-render.vercel.app/api?type=waving&color=0:0D0D0D,50:1a1a2e,100:7000FF&height=200&section=header&text=agent-eval-harness&fontSize=52&fontColor=ffffff&fontAlignY=38&desc=Deterministic%20Zero-Cloud%20Agent%20Evaluation%2C%20Red-Teaming%20%26%20Benchmark%20Harness&descAlignY=58&descSize=16&animation=fadeIn" width="100%"/>
+
+<br/>
+
+[![Tests](https://img.shields.io/badge/Tests-14%20Passed-00C853?style=for-the-badge&logo=pytest&logoColor=white)](#-quickstart)
+[![Python](https://img.shields.io/badge/Python-3.9%20%7C%203.10%20%7C%203.11%20%7C%203.12-7000FF?style=for-the-badge&logo=python&logoColor=white)](https://pypi.org/project/agent-eval-harness/)
+[![MCP](https://img.shields.io/badge/MCP-JSON--RPC%202.0-8a2be2?style=for-the-badge)](https://modelcontextprotocol.io/)
+[![Telemetry](https://img.shields.io/badge/Telemetry-0%25%20Local--First-00C853?style=for-the-badge)](#-architectural-benchmark-top-5-global-incumbents-vs-agent-eval-harness)
+[![Latency](https://img.shields.io/badge/Latency-%3C0.1ms%2Fcase-00B4D8?style=for-the-badge)](#-architectural-benchmark-top-5-global-incumbents-vs-agent-eval-harness)
+[![License: MIT](https://img.shields.io/badge/License-MIT-00C853?style=for-the-badge&logo=opensourceinitiative&logoColor=white)](LICENSE)
+[![Benni OS](https://img.shields.io/badge/Benni%20OS-benni--os.net-0D0D0D?style=for-the-badge)](https://benni-os.net)
+
+<br/>
 
 > **Deterministic Zero-Cloud Agent Evaluation, Red-Teaming & Benchmark Harness for AI Agents & MCP.**  
 > Zero external LLM token burn. Zero telemetry leaks. Mathematical assertion matrices. Cryptographic SHA-256 release gate receipts.
 
----
+<br/>
 
-<p align="center">
-  <img src="assets/demo.svg" alt="agent-eval-harness terminal demo" width="100%" />
-</p>
+<img src="assets/demo.svg" alt="agent-eval-harness terminal demo" width="100%"/>
+
+</div>
 
 ---
 
@@ -61,7 +68,7 @@ agent-eval-harness benchmark
 
 ---
 
-## 🧩 Model Context Protocol (MCP) Integration
+## 🏗️ Model Context Protocol (MCP) Integration
 
 `agent-eval-harness` ships with a native, zero-config MCP server for **Claude Code, Cursor, Copilot, Cline, and Windsurf**.
 
@@ -85,7 +92,7 @@ agent-eval-harness benchmark
 
 ---
 
-## 💻 Python API Usage
+## 🏗️ Python API Usage
 
 ```python
 from agent_eval_harness import EvalHarness, EvalSuite, TestCase, Assertion, AssertionType
@@ -127,7 +134,7 @@ print("Verifier Validated:", valid)  # True
 
 ---
 
-## 🔒 Reproducible Cryptographic Verification (RFC 8785 JCS)
+## 🏗️ Reproducible Cryptographic Verification (RFC 8785 JCS)
 
 > *"Cryptographic receipts are only valuable if the verifier can reproduce the claim from a canonical payload. The receipt must bind task version, input digest, policy version, and evaluator ruleset — not just the outcome."* — Community Architectural Review.
 
@@ -145,32 +152,47 @@ If an adversary alters a single character in the candidate input or relaxes an a
 
 | Repository | Focus & Architecture | Stars |
 | :--- | :--- | :---: |
+| **[`conductor-sdd`](https://github.com/Benni-OS/conductor-sdd)** | Zero-Dependency Spec-Driven Development, Static AST Drift Detector & MCP Guardrail | [![GitHub Stars](https://img.shields.io/github/stars/Benni-OS/conductor-sdd?style=flat)](https://github.com/Benni-OS/conductor-sdd) |
+| **[`benni-inference-engine`](https://github.com/Benni-OS/benni-inference-engine)** | High-Throughput Sovereign Local Inference for 8GB–16GB Consumer GPUs | [![GitHub Stars](https://img.shields.io/github/stars/Benni-OS/benni-inference-engine?style=flat)](https://github.com/Benni-OS/benni-inference-engine) |
 | **[`agent-eval-harness`](https://github.com/BenniAlencar/agent-eval-harness)** | Deterministic Zero-Cloud Agent Evaluation, Red-Teaming & Benchmark Harness | [![GitHub Stars](https://img.shields.io/github/stars/BenniAlencar/agent-eval-harness?style=flat)](https://github.com/BenniAlencar/agent-eval-harness) |
 | **[`agent-code-sandbox`](https://github.com/BenniAlencar/agent-code-sandbox)** | Micro-Second Zero-Dependency Code Sandbox & Execution Shield for AI Agents | [![GitHub Stars](https://img.shields.io/github/stars/BenniAlencar/agent-code-sandbox?style=flat)](https://github.com/BenniAlencar/agent-code-sandbox) |
 | **[`agent-deep-research`](https://github.com/BenniAlencar/agent-deep-research)** | Autonomous Multi-Source Deep Research & Evidence Synthesis Engine | [![GitHub Stars](https://img.shields.io/github/stars/BenniAlencar/agent-deep-research?style=flat)](https://github.com/BenniAlencar/agent-deep-research) |
-| **[`agent-cyber-sentinel`](https://github.com/BenniAlencar/agent-cyber-sentinel)** | Zero-Trust Runtime Security, Prompt Injection Firewall & Secrets Redaction | [![GitHub Stars](https://img.shields.io/github/stars/BenniAlencar/agent-cyber-sentinel?style=flat)](https://github.com/BenniAlencar/agent-cyber-sentinel) |
 | **[`agent-browser-mesh`](https://github.com/BenniAlencar/agent-browser-mesh)** | Token-Saving Resilient Headless Browser Automation & A11y DOM Compiler | [![GitHub Stars](https://img.shields.io/github/stars/BenniAlencar/agent-browser-mesh?style=flat)](https://github.com/BenniAlencar/agent-browser-mesh) |
+| **[`agent-intent-compiler`](https://github.com/BenniAlencar/agent-intent-compiler)** | Deterministic Intent Compiler & Typed DAG Execution Planner for AI Agents | [![GitHub Stars](https://img.shields.io/github/stars/BenniAlencar/agent-intent-compiler?style=flat)](https://github.com/BenniAlencar/agent-intent-compiler) |
+| **[`agent-token-optimizer`](https://github.com/BenniAlencar/agent-token-optimizer)** | Sub-Millisecond Context Compression & Semantic Deduplication Engine | [![GitHub Stars](https://img.shields.io/github/stars/BenniAlencar/agent-token-optimizer?style=flat)](https://github.com/BenniAlencar/agent-token-optimizer) |
+| **[`bio-sync-operator-os`](https://github.com/BenniAlencar/bio-sync-operator-os)** | Real-Time Biometric Swarm Governance & 120 FPS Resonant Kinetic Interface | [![GitHub Stars](https://img.shields.io/github/stars/BenniAlencar/bio-sync-operator-os?style=flat)](https://github.com/BenniAlencar/bio-sync-operator-os) |
+| **[`agent-cyber-sentinel`](https://github.com/BenniAlencar/agent-cyber-sentinel)** | Zero-Trust Runtime Security, Prompt Injection Firewall & Secrets Redaction | [![GitHub Stars](https://img.shields.io/github/stars/BenniAlencar/agent-cyber-sentinel?style=flat)](https://github.com/BenniAlencar/agent-cyber-sentinel) |
 | **[`agent-run-ledger`](https://github.com/BenniAlencar/agent-run-ledger)** | Deterministic Multi-Step Task Execution Ledger & Anti-Looping Engine | [![GitHub Stars](https://img.shields.io/github/stars/BenniAlencar/agent-run-ledger?style=flat)](https://github.com/BenniAlencar/agent-run-ledger) |
 | **[`reality-lock`](https://github.com/BenniAlencar/reality-lock)** | Cryptographic State Verification & Invariant Proof Engine for Agents | [![GitHub Stars](https://img.shields.io/github/stars/BenniAlencar/reality-lock?style=flat)](https://github.com/BenniAlencar/reality-lock) |
 | **[`agent-memory-mesh`](https://github.com/BenniAlencar/agent-memory-mesh)** | Hybrid Vector + BM25 Hierarchical Session Memory & Continuity Engine | [![GitHub Stars](https://img.shields.io/github/stars/BenniAlencar/agent-memory-mesh?style=flat)](https://github.com/BenniAlencar/agent-memory-mesh) |
-| **[`benni-inference-engine`](https://github.com/Benni-OS/benni-inference-engine)** | Dual-Model Local LLM Router & Memory-Mapped Inference Engine | [![GitHub Stars](https://img.shields.io/github/stars/Benni-OS/benni-inference-engine?style=flat)](https://github.com/Benni-OS/benni-inference-engine) |
 | **[`benni-operator-gateway`](https://github.com/Benni-OS/benni-operator-gateway)** | Human-in-the-Loop Approval & Policy Enforcement Gateway | [![GitHub Stars](https://img.shields.io/github/stars/Benni-OS/benni-operator-gateway?style=flat)](https://github.com/Benni-OS/benni-operator-gateway) |
-| **[`mcp-forge`](https://github.com/Benni-OS/mcp-forge)** | Rapid Model Context Protocol (MCP) Server Scaffolding & Dynamic Tooling | [![GitHub Stars](https://img.shields.io/github/stars/BenniAlencar/mcp-forge?style=flat)](https://github.com/BenniAlencar/mcp-forge) |
-| **[`benni-nexus`](https://github.com/Benni-OS/benni-nexus)** | Autonomous Multi-Agent Intent Routing & Swarm Coordination Hub | [![GitHub Stars](https://img.shields.io/github/stars/Benni-OS/benni-nexus?style=flat)](https://github.com/BenniAlencar/benni-nexus) |
-| **[`community-autopilot`](https://github.com/Benni-OS/community-autopilot)** | Autonomous GitHub Community Triaging & PR Feedback Agent | [![GitHub Stars](https://img.shields.io/github/stars/Benni-OS/community-autopilot?style=flat)](https://github.com/BenniAlencar/community-autopilot) |
+| **[`mcp-forge`](https://github.com/Benni-OS/mcp-forge)** | Rapid Model Context Protocol (MCP) Server Scaffolding & Dynamic Tooling | [![GitHub Stars](https://img.shields.io/github/stars/Benni-OS/mcp-forge?style=flat)](https://github.com/Benni-OS/mcp-forge) |
+| **[`benni-nexus`](https://github.com/Benni-OS/benni-nexus)** | Autonomous Multi-Agent Intent Routing & Swarm Coordination Hub | [![GitHub Stars](https://img.shields.io/github/stars/Benni-OS/benni-nexus?style=flat)](https://github.com/Benni-OS/benni-nexus) |
+| **[`community-autopilot`](https://github.com/Benni-OS/community-autopilot)** | Autonomous GitHub Community Triaging & PR Feedback Agent | [![GitHub Stars](https://img.shields.io/github/stars/Benni-OS/community-autopilot?style=flat)](https://github.com/Benni-OS/community-autopilot) |
 
 ---
 
 ## 🏛️ Commercial & Sovereign Architecture
 
 Need autonomous multi-agent swarm orchestration, private datacenter infrastructure, or enterprise governance?
-* **Benni Master OS Platform:** [https://benni-os.net](https://benni-os.net)
-* **Operator Mode Playbook:** [https://benni-os.net/blog/academy.html](https://benni-os.net/blog/academy.html)
+
+- **Official Website:** [https://benni-os.net](https://benni-os.net)
+- **Operator Mode Playbook:** [https://benni-os.net/blog/academy.html](https://benni-os.net/blog/academy.html)
+- **GitHub Organization:** [https://github.com/Benni-OS](https://github.com/Benni-OS)
+- **Maintainer:** [Benni Alencar](https://github.com/BenniAlencar)
 
 ---
 
 ## 📄 License & Provenance
 
-* **License:** [MIT License](LICENSE)
-* **Author:** Benni Alencar (`bennialencar@gmail.com`)
-* **Architecture:** Benni Master OS v9.4 Tier-0 Governance Standard
+- **License:** [MIT License](LICENSE)
+- **Author:** Benni Alencar (`bennialencar@gmail.com`)
+- **Architecture:** Benni Master OS v9.4 Tier-0 Governance Standard
+
+<div align="center">
+
+<img src="https://capsule-render.vercel.app/api?type=waving&color=0:7000FF,50:1a1a2e,100:0D0D0D&height=120&section=footer" width="100%"/>
+
+**agent-eval-harness** — *Deterministic Zero-Cloud Agent Evaluation, Red-Teaming & Benchmark Harness* • [benni-os.net](https://benni-os.net) • `MIT License`
+
+</div>
