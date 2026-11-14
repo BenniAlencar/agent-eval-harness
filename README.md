@@ -19,7 +19,7 @@
 
 <br/>
 
-<img src="assets/demo.svg" alt="agent-eval-harness terminal demo" width="100%"/>
+<img src="assets/demo.gif" alt="agent-eval-harness terminal demo" width="100%"/>
 
 </div>
 
