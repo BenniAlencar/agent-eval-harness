@@ -10,9 +10,11 @@ import sys
 import time
 
 from . import __version__
-from .assertions import Assertion, AssertionType
-from .core import EvalHarness, EvalSuite, TestCase
-from .mcp_server import run_stdio
+from .core.assertions import Assertion, AssertionType
+from .core.harness import EvalHarness, EvalSuite, TestCase
+from .serve.mcp_server import run_stdio
+from .tools.bench_matrix import main as matrix_main
+from .tools.doctor import main as doctor_main
 
 
 def print_banner() -> None:
@@ -71,7 +73,7 @@ def cmd_benchmark(args: argparse.Namespace) -> None:
     print("[+] Benchmark Result: PASS (Zero Cloud Telemetry Leakage)")
 
 
-def main() -> None:
+def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(
         prog="agent-eval-harness",
         description="Deterministic Zero-Cloud Agent Evaluation, Red-Teaming & Benchmark Harness",
@@ -85,17 +87,37 @@ def main() -> None:
     # MCP command
     subparsers.add_parser("mcp", help="Launch Model Context Protocol (MCP) stdio server")
 
-    args = parser.parse_args()
+    # Doctor command
+    p_doc = subparsers.add_parser("doctor", help="Run local diagnostics for red-team scanner and receipts")
+    p_doc.add_argument("--json", action="store_true", dest="as_json", help="Emit JSON output")
+
+    # Matrix command
+    p_mat = subparsers.add_parser("matrix", help="Run multi-scale evaluation throughput matrix")
+    p_mat.add_argument("--cases", nargs="+", type=int, default=[10, 50, 100, 500])
+    p_mat.add_argument("--reps", type=int, default=2)
+    p_mat.add_argument("--json", action="store_true", dest="as_json", help="Emit JSON output")
+
+    args = parser.parse_args(argv)
 
     if args.command == "benchmark":
         print_banner()
         cmd_benchmark(args)
-    elif args.command == "mcp":
+        return 0
+    if args.command == "mcp":
         run_stdio()
-    else:
-        print_banner()
-        parser.print_help()
+        return 0
+    if args.command == "doctor":
+        return doctor_main(["--json"] if args.as_json else [])
+    if args.command == "matrix":
+        mat_argv = ["--cases", *[str(c) for c in args.cases], "--reps", str(args.reps)]
+        if args.as_json:
+            mat_argv.append("--json")
+        return matrix_main(mat_argv)
+
+    print_banner()
+    parser.print_help()
+    return 0
 
 
 if __name__ == "__main__":
-    main()
+    sys.exit(main())

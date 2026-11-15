@@ -4,7 +4,7 @@
 
 <br/>
 
-[![Tests](https://img.shields.io/badge/Tests-14%20Passed-00C853?style=for-the-badge&logo=pytest&logoColor=white)](#-quickstart)
+[![Tests](https://img.shields.io/badge/Tests-18%20Passed-00C853?style=for-the-badge&logo=pytest&logoColor=white)](#-quickstart)
 [![Python](https://img.shields.io/badge/Python-3.9%20%7C%203.10%20%7C%203.11%20%7C%203.12-7000FF?style=for-the-badge&logo=python&logoColor=white)](https://pypi.org/project/agent-eval-harness/)
 [![MCP](https://img.shields.io/badge/MCP-JSON--RPC%202.0-8a2be2?style=for-the-badge)](https://modelcontextprotocol.io/)
 [![Telemetry](https://img.shields.io/badge/Telemetry-0%25%20Local--First-00C853?style=for-the-badge)](#-architectural-benchmark-top-5-global-incumbents-vs-agent-eval-harness)
@@ -48,6 +48,41 @@ We benchmarked `agent-eval-harness` against the top 5 global open-source evaluat
 | **Runtime & Deps** | Docker / ClickHouse | Node.js (50MB+ npm) | Heavy Python (PyTorch) | Heavy LangChain | OpenTelemetry Server | **✅ Pure Python (Zero Dep)** |
 | **Audit Provenance** | UI dashboard | Ephemeral HTML | Ephemeral JSON | Python dict | UI dashboard | **✅ SHA-256 Merkle Receipts** |
 | **Native MCP Server** | ❌ No | ❌ No | ❌ No | ❌ No | ❌ No | **✅ Built-in JSON-RPC 2.0 stdio** |
+
+---
+
+## 🏗️ Architecture
+
+```text
+  AI Agents / CI/CD Release Gates / MCP Clients
+         │
+         ├──► CLI   agent-eval-harness benchmark | doctor | matrix
+         └──► STDIO JSON-RPC 2.0 (agent-eval-harness mcp)
+                       │
+                       ▼
+  ┌─────────────────────────────────────────────────────────────────────┐
+  │                      agent-eval-harness (AEH)                       │
+  │                                                                     │
+  │  ┌───────────────────┐  ┌───────────────────┐  ┌─────────────────┐  │
+  │  │ EvalHarness       │  │  Assertions &     │  │ RFC 8785 JCS    │  │
+  │  │ • EvalSuite       │─►│  Metrics          │─►│ Receipts        │  │
+  │  │ • Pass Threshold  │  │  • JSON Schema    │  │ • Merkle Root   │  │
+  │  │ • <0.1ms / Case   │  │  • Secret Leaks   │  │ • Reproducible  │  │
+  │  └───────────────────┘  └───────────────────┘  └─────────────────┘  │
+  │                                                                     │
+  │  ┌───────────────────┐  ┌───────────────────┐  ┌─────────────────┐  │
+  │  │ Red-Team Scanner  │  │  Serve & MCP      │  │ Tools & Matrix  │  │
+  │  │ • API Key Regex   │  │  • JSON-RPC 2.0   │  │ • Eval Doctor   │  │
+  │  │ • SSRF / Prompt   │  │  • Telemetry P99  │  │ • 10–500 Matrix │  │
+  │  └───────────────────┘  └───────────────────┘  └─────────────────┘  │
+  └─────────────────────────────────────────────────────────────────────┘
+         │                                         │
+         ▼                                         ▼
+   Zero-Cloud Release Gate                 Cryptographic Audit Proof
+   ($0.00 Token Burn / CI Exit Code)       (SHA-256 JCS Merkle Receipt)
+```
+
+See [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md) for the full layer specification.
 
 ---
 
@@ -143,6 +178,51 @@ Starting in **v1.1.0**, `EvaluationReceipt` implements **RFC 8785 JSON Canonical
 $$\mathcal{R}_{\text{canonical}} = \text{SHA256}\Big(\text{JCS}\big(\text{task\_ver} \parallel H(\text{inputs}) \parallel \text{policy\_ver} \parallel H(\text{rules}) \parallel H(\text{engine}) \parallel \text{outcome}\big)\Big)$$
 
 If an adversary alters a single character in the candidate input or relaxes an assertion weight, `verify_reproducibility()` rejects the receipt immediately.
+
+---
+
+## 📁 Project Structure
+
+```text
+agent-eval-harness/
+├── assets/
+│   └── demo.gif                          # Terminal evaluation & red-team demo
+├── src/
+│   └── agent_eval_harness/
+│       ├── __init__.py                   # Backwards-compatible public exports
+│       ├── cli.py                        # CLI entrypoint (benchmark, mcp, doctor, matrix)
+│       ├── core/
+│       │   ├── __init__.py               # Core package exports
+│       │   ├── assertions.py             # Assertion, AssertionType & AssertionResult
+│       │   ├── harness.py                # EvalHarness, EvalSuite, TestCase & SuiteResult
+│       │   ├── metrics.py                # Similarity, JSON structure & red-team leak scanner
+│       │   └── receipts.py               # RFC 8785 JCS canonical SHA-256 EvaluationReceipt
+│       ├── serve/
+│       │   ├── __init__.py               # Serve package exports
+│       │   ├── mcp_server.py             # Native JSON-RPC 2.0 MCP stdio server
+│       │   ├── telemetry.py              # Suite P50/P90/P99 latency & pass-rate telemetry
+│       │   └── health_monitor.py         # Red-team scanner & JCS receipt self-test monitor
+│       └── tools/
+│           ├── __init__.py               # Tools package exports
+│           ├── doctor.py                 # Runtime diagnostics & integrity self-test
+│           └── bench_matrix.py           # 10–500 case evaluation throughput benchmark matrix
+├── docs/
+│   └── ARCHITECTURE.md                   # Layer-by-layer architectural specification
+├── examples/
+│   ├── quickstart_eval_gate.py           # Programmatic evaluation gate & JCS receipt quickstart
+│   └── red_team_receipt_demo.py          # Red-team secret leak blocking demo
+├── scripts/
+│   ├── benchmark_eval_matrix.py          # 10–500 case throughput matrix runner
+│   └── gate_eval_release.py              # Release readiness & cryptographic integrity gate
+└── tests/
+    ├── conftest.py                       # Pytest path & fixture configuration
+    ├── test_assertions.py                # Assertion evaluation tests
+    ├── test_core.py                      # EvalHarness & EvalSuite gate tests
+    ├── test_mcp.py                       # MCP evaluation tool logic tests
+    ├── test_metrics.py                   # Similarity, JSON & red-team leak tests
+    ├── test_receipts.py                  # RFC 8785 JCS receipt reproducibility tests
+    └── test_serve_and_tools.py           # Telemetry, health monitor, doctor & matrix tests
+```
 
 ---
 
